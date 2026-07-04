@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ChenDusk's personal homepage built with Astro 5.x. The site uses a HyperOS × Liquid Glass design system — a fusion of MIUIX/HyperOS (Squircle corners, deep dark mode, press feedback, MiSans font) and iOS 26 Liquid Glass (glassmorphism, edge highlights, dual-layer architecture, fluid animations).
+ChenDusk's personal homepage built with Astro 7.x. The site uses a HyperOS × Liquid Glass design system — a fusion of MIUIX/HyperOS (Squircle corners, deep dark mode, press feedback, MiSans font) and iOS 26 Liquid Glass (glassmorphism, edge highlights, dual-layer architecture, fluid animations).
 
 Design references: [MIUIX](https://compose-miuix-ui.github.io/miuix/zh_CN/) · [Liquid Glass](https://zh.wikipedia.org/zh-cn/Liquid_Glass)
 
@@ -21,6 +21,8 @@ npm run preview  # Preview production build locally
 ```
 
 No test framework or linter is configured.
+
+**TypeScript**: `tsconfig.json` extends `astro/tsconfigs/strict` — all strict type-checking options are enabled.
 
 ## Architecture
 

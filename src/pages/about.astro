@@ -1,0 +1,212 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { siteConfig } from '../site.config';
+
+const { profile, about, socials, skills } = siteConfig;
+---
+
+<BaseLayout title={`关于 | ${profile.displayName}`}>
+  <section class="section">
+    <div class="container">
+      <h1 class="page-title animate-in">关于我</h1>
+
+      {/* 自我介绍 */}
+      <div class="about-card glass-card glass-highlight squircle-xl animate-in animate-in-delay-1">
+        {about.intro.map((p) => (
+          <p class="about-text">{p}</p>
+        ))}
+      </div>
+
+      {/* 统计数据 */}
+      <div class="stats-row animate-in animate-in-delay-2">
+        <div class="stat-card glass-card pressable squircle-lg">
+          <span class="stat-value">{about.stats.repos}</span>
+          <span class="stat-label">公开仓库</span>
+        </div>
+        <div class="stat-card glass-card pressable squircle-lg">
+          <span class="stat-value">{about.stats.stars}</span>
+          <span class="stat-label">Stars</span>
+        </div>
+        <div class="stat-card glass-card pressable squircle-lg">
+          <span class="stat-value">{about.stats.contributions}</span>
+          <span class="stat-label">年度贡献</span>
+        </div>
+      </div>
+
+      {/* 兴趣爱好 */}
+      <div class="about-block animate-in animate-in-delay-3">
+        <h2 class="section-title">兴趣爱好</h2>
+        <ul class="interests-list">
+          {about.interests.map((item) => (
+            <li class="interest-item glass-card squircle-sm">
+              <span class="interest-dot">●</span>
+              {item}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* 技能 */}
+      <div class="about-block animate-in animate-in-delay-4">
+        <h2 class="section-title">技能</h2>
+        <div class="skills-grid">
+          {skills.map((skill) => (
+            <span class="tag">{skill}</span>
+          ))}
+        </div>
+      </div>
+
+      {/* 联系方式 */}
+      <div class="about-block animate-in animate-in-delay-5">
+        <h2 class="section-title">联系方式</h2>
+        <div class="contact-grid">
+          <div class="contact-item glass-card squircle-sm">
+            <span class="contact-icon">📧</span>
+            <span class="contact-label">Email</span>
+            <a href={`mailto:${profile.email}`} class="contact-value">{profile.email}</a>
+          </div>
+          {socials.map((s) => (
+            <a
+              href={s.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="contact-item glass-card pressable squircle-sm"
+            >
+              <span class="contact-icon">🔗</span>
+              <span class="contact-label">{s.name}</span>
+              <span class="contact-value">访问 →</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-size: var(--text-4xl);
+    font-weight: 600;
+    margin-bottom: var(--space-xl);
+  }
+
+  /* 关于卡片 */
+  .about-card {
+    padding: var(--space-xl);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .about-text {
+    font-size: var(--text-md);
+    color: var(--color-text-secondary);
+    line-height: 1.8;
+    margin-bottom: var(--space-md);
+  }
+
+  .about-text:last-child {
+    margin-bottom: 0;
+  }
+
+  /* 统计 */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--space-xl) var(--space-md);
+    text-align: center;
+  }
+
+  .stat-value {
+    font-size: var(--text-4xl);
+    font-weight: 600;
+    color: var(--color-primary);
+    line-height: 1;
+    margin-bottom: var(--space-sm);
+  }
+
+  .stat-label {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  /* 通用块 */
+  .about-block {
+    margin-bottom: var(--space-2xl);
+  }
+
+  /* 兴趣列表 */
+  .interests-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  .interest-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-lg);
+    font-size: var(--text-md);
+    color: var(--color-text-secondary);
+  }
+
+  .interest-dot {
+    color: var(--color-primary);
+    font-size: var(--text-xs);
+  }
+
+  /* 技能 */
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+
+  /* 联系方式 */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--space-md);
+  }
+
+  .contact-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding: var(--space-lg);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .contact-icon {
+    font-size: var(--text-2xl);
+  }
+
+  .contact-label {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+
+  .contact-value {
+    font-size: var(--text-base);
+    color: var(--color-primary);
+  }
+
+  @media (max-width: 640px) {
+    .stats-row {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

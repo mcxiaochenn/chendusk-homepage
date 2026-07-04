@@ -1,0 +1,108 @@
+---
+interface Props {
+  name: string;
+  description: string;
+  url: string;
+  language: string;
+  stars: number;
+  delay?: number;
+}
+
+const { name, description, url, language, stars, delay = 0 } = Astro.props;
+
+const langColors: Record<string, string> = {
+  Go: '#00ADD8',
+  JavaScript: '#F7DF1E',
+  Dart: '#0175C2',
+  TypeScript: '#3178C6',
+};
+
+const color = langColors[language] ?? '#888';
+---
+
+<a
+  href={url}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={['project-card', 'glass-card', 'glass-highlight', 'pressable', 'squircle-lg', 'animate-in', `animate-in-delay-${delay}`]}
+>
+  <div class="project-header">
+    <span class="project-icon">📁</span>
+    <h3 class="project-name">{name}</h3>
+  </div>
+  <p class="project-desc">{description}</p>
+  <div class="project-meta">
+    <span class="project-lang">
+      <span class="lang-dot" style={`background: ${color}`}></span>
+      {language}
+    </span>
+    {stars > 0 && (
+      <span class="project-stars">⭐ {stars}</span>
+    )}
+  </div>
+</a>
+
+<style>
+  .project-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    padding: var(--space-lg);
+    text-decoration: none;
+    color: var(--color-text);
+  }
+
+  .squircle-lg {
+    border-radius: var(--radius-lg);
+  }
+
+  .project-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .project-icon {
+    font-size: var(--text-xl);
+  }
+
+  .project-name {
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .project-desc {
+    font-size: var(--text-base);
+    color: var(--color-text-tertiary);
+    line-height: 1.5;
+    flex: 1;
+  }
+
+  .project-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    margin-top: var(--space-xs);
+  }
+
+  .project-lang {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+  }
+
+  .lang-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
+  .project-stars {
+    font-size: var(--text-sm);
+    color: var(--color-text-tertiary);
+  }
+</style>

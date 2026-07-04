@@ -1,0 +1,278 @@
+/*
+ * 全局样式 — HyperOS × Liquid Glass 融合风格
+ *
+ * 设计理念:
+ *   MIUIX/HyperOS → Squircle圆角、深色模式、分层容器、按压反馈
+ *   Liquid Glass  → 毛玻璃透明、边缘高光、双层架构、流体动画
+ */
+
+/* ===== CSS 变量 (主题令牌) ===== */
+:root {
+  /* 主色调 — MIUIX Primary Blue */
+  --color-primary: #3482ff;
+  --color-primary-variant: #0073dd;
+
+  /* 背景层级 — Liquid Glass 双层架构 */
+  --color-bg: #000000;
+  --color-bg-elevated: #0a0a0a;
+  --color-surface: #111111;
+  --color-surface-high: #1a1a1a;
+  --color-surface-highest: #242424;
+
+  /* 文字层级 — MIUIX 不透明度阶梯 */
+  --color-text: #ffffff;
+  --color-text-secondary: rgba(255, 255, 255, 0.80);
+  --color-text-tertiary: rgba(255, 255, 255, 0.60);
+  --color-text-quaternary: rgba(255, 255, 255, 0.40);
+
+  /* 毛玻璃 — Liquid Glass 核心 */
+  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.10);
+  --glass-border-hover: rgba(255, 255, 255, 0.18);
+  --glass-blur: 20px;
+  --glass-blur-heavy: 40px;
+
+  /* 边缘高光 — Liquid Glass 发光边缘 */
+  --glow-subtle: 0 0 0 1px rgba(255, 255, 255, 0.06);
+  --glow-soft: 0 0 0 1px rgba(255, 255, 255, 0.10),
+               0 0 20px -5px rgba(52, 130, 255, 0.15);
+  --glow-strong: 0 0 0 1px rgba(255, 255, 255, 0.15),
+                 0 0 30px -5px rgba(52, 130, 255, 0.25);
+
+  /* Squircle 圆角 — MIUIX 连续曲率 */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+
+  /* 间距 */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+
+  /* 排版 — MIUIX 字号体系 */
+  --font-sans: 'MiSans', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+               'Noto Sans SC', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --text-xs: 0.6875rem;   /* 11px - footnote2 */
+  --text-sm: 0.8125rem;   /* 13px - footnote1 */
+  --text-base: 0.875rem;  /* 14px - body2 */
+  --text-md: 1rem;        /* 16px - body1 */
+  --text-lg: 1.0625rem;   /* 17px - main/button */
+  --text-xl: 1.125rem;    /* 18px - title4 */
+  --text-2xl: 1.25rem;    /* 20px - title3 */
+  --text-3xl: 1.5rem;     /* 24px - title2 */
+  --text-4xl: 2rem;       /* 32px - title1 */
+
+  /* 动画 — HyperOS 弹性物理 */
+  --ease-spring: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-fast: 200ms;
+  --duration-normal: 350ms;
+  --duration-slow: 500ms;
+
+  /* 按压缩放 — MIUIX Sink 反馈 */
+  --press-scale: 0.97;
+}
+
+/* ===== 全局重置 ===== */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  font-size: 16px;
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+  overflow-x: hidden;
+  /* 全局微渐变背景 */
+  background-image:
+    radial-gradient(ellipse at 50% 0%, rgba(52, 130, 255, 0.08) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 80%, rgba(52, 130, 255, 0.04) 0%, transparent 50%);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+a:hover {
+  color: var(--color-primary-variant);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ===== Liquid Glass 玻璃卡片 ===== */
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glow-subtle);
+  transition:
+    background var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out),
+    transform var(--duration-fast) var(--ease-spring);
+}
+
+.glass-card:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  box-shadow: var(--glow-soft);
+}
+
+/* MIUIX 按压反馈 (Sink) */
+.glass-card.pressable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.glass-card.pressable:active {
+  transform: scale(var(--press-scale));
+}
+
+/* ===== Liquid Glass 边缘高光装饰 ===== */
+.glass-highlight {
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-highlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.03) 40%,
+    rgba(255, 255, 255, 0.0) 60%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ===== Squircle 形状 (CSS 近似) ===== */
+.squircle {
+  border-radius: var(--radius-lg);
+}
+
+.squircle-sm {
+  border-radius: var(--radius-sm);
+}
+
+.squircle-xl {
+  border-radius: var(--radius-xl);
+}
+
+/* ===== 容器 ===== */
+.container {
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+/* ===== 节 ===== */
+.section {
+  padding: var(--space-3xl) 0;
+}
+
+.section-title {
+  font-size: var(--text-3xl);
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+  color: var(--color-text);
+}
+
+/* ===== 标签 (Skill Tags) ===== */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-xs) var(--space-md);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.tag:hover {
+  background: var(--glass-bg-hover);
+  border-color: var(--glass-border-hover);
+  color: var(--color-text);
+}
+
+/* ===== 流体动画入场 ===== */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-in {
+  animation: fade-in-up var(--duration-slow) var(--ease-spring) both;
+}
+
+.animate-in-delay-1 { animation-delay: 100ms; }
+.animate-in-delay-2 { animation-delay: 200ms; }
+.animate-in-delay-3 { animation-delay: 300ms; }
+.animate-in-delay-4 { animation-delay: 400ms; }
+.animate-in-delay-5 { animation-delay: 500ms; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  :root {
+    --space-lg: 16px;
+    --space-xl: 24px;
+    --space-2xl: 32px;
+    --space-3xl: 48px;
+  }
+
+  .section-title {
+    font-size: var(--text-2xl);
+  }
+}

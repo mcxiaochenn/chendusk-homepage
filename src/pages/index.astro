@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AvatarCard from '../components/AvatarCard.astro';
+import SkillTags from '../components/SkillTags.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { siteConfig } from '../site.config';
+
+const { projects } = siteConfig;
+---
+
+<BaseLayout>
+  {/* Hero 区域 — 头像卡片 */}
+  <section class="hero-section">
+    <div class="container">
+      <AvatarCard />
+    </div>
+  </section>
+
+  {/* 技能标签 */}
+  <SkillTags />
+
+  {/* 项目展示 */}
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title animate-in">开源项目</h2>
+      <div class="projects-grid">
+        {projects.map((project, i) => (
+          <ProjectCard {...project} delay={i + 1} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero-section {
+    padding: var(--space-2xl) 0;
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  @media (max-width: 640px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

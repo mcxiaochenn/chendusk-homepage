@@ -1,0 +1,155 @@
+---
+import { siteConfig } from '../site.config';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = siteConfig.title,
+  description = siteConfig.description,
+} = Astro.props;
+---
+<!DOCTYPE html>
+<html lang={siteConfig.lang}>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title}</title>
+
+  {/* MiSans 字体 */}
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+  <link
+    href="https://cdn.jsdelivr.net/npm/misans@4.0/lib/Normal/MiSans-Regular.min.css"
+    rel="stylesheet"
+  />
+  <link
+    href="https://cdn.jsdelivr.net/npm/misans@4.0/lib/Normal/MiSans-Semibold.min.css"
+    rel="stylesheet"
+  />
+
+  {/* Favicon */}
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+<body>
+  {/* Liquid Glass 功能层: 导航栏 */}
+  <nav class="nav glass-card glass-highlight">
+    <div class="nav-inner container">
+      <a href="/" class="nav-brand">
+        <span class="nav-brand-icon">✦</span>
+        <span class="nav-brand-text">{siteConfig.profile.displayName}</span>
+      </a>
+      <div class="nav-links">
+        {siteConfig.nav.map((item) => (
+          <a href={item.href} class="nav-link">{item.label}</a>
+        ))}
+      </div>
+    </div>
+  </nav>
+
+  {/* 内容层 */}
+  <main>
+    <slot />
+  </main>
+
+  {/* 页脚 */}
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span class="footer-text">{siteConfig.footer.copyright}</span>
+      <span class="footer-sep">·</span>
+      <span class="footer-text">{siteConfig.footer.poweredBy}</span>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style>
+  /* ===== 导航栏 — Liquid Glass 悬浮功能层 ===== */
+  .nav {
+    position: fixed;
+    top: var(--space-md);
+    left: 50%;
+    transform: translateX(-50%);
+    width: calc(100% - var(--space-xl) * 2);
+    max-width: 960px;
+    z-index: 100;
+    padding: var(--space-sm) var(--space-md);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(var(--glass-blur-heavy));
+    -webkit-backdrop-filter: blur(var(--glass-blur-heavy));
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    font-size: var(--text-lg);
+    font-weight: 600;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  .nav-brand:hover {
+    color: var(--color-primary);
+  }
+
+  .nav-brand-icon {
+    font-size: var(--text-xl);
+    color: var(--color-primary);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: var(--space-xs);
+  }
+
+  .nav-link {
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    border-radius: 999px;
+    transition: all var(--duration-fast) var(--ease-out);
+    text-decoration: none;
+  }
+
+  .nav-link:hover {
+    color: var(--color-text);
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* ===== 页脚 ===== */
+  .footer {
+    padding: var(--space-2xl) 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.06);
+  }
+
+  .footer-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+  }
+
+  .footer-text {
+    font-size: var(--text-sm);
+    color: var(--color-text-quaternary);
+  }
+
+  .footer-sep {
+    color: var(--color-text-quaternary);
+  }
+
+  /* 为 fixed 导航栏留出空间 */
+  main {
+    padding-top: calc(60px + var(--space-xl) * 2);
+  }
+</style>

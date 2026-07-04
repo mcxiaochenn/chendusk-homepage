@@ -1,0 +1,23 @@
+---
+import { siteConfig } from '../site.config';
+const { skills } = siteConfig;
+---
+
+<div class="skills-section section">
+  <div class="container">
+    <h2 class="section-title animate-in">技能标签</h2>
+    <div class="skills-grid animate-in animate-in-delay-1">
+      {skills.map((skill) => (
+        <span class="tag">{skill}</span>
+      ))}
+    </div>
+  </div>
+</div>
+
+<style>
+  .skills-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+  }
+</style>

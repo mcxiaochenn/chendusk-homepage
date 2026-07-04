@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { siteConfig } from '../site.config';
+
+const { projects } = siteConfig;
+---
+
+<BaseLayout title={`项目 | ${siteConfig.profile.displayName}`}>
+  <section class="section">
+    <div class="container">
+      <h1 class="page-title animate-in">开源项目</h1>
+      <p class="page-subtitle animate-in animate-in-delay-1">
+        我参与和维护的开源项目
+      </p>
+      <div class="projects-grid">
+        {projects.map((project, i) => (
+          <ProjectCard {...project} delay={i + 2} />
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-title {
+    font-size: var(--text-4xl);
+    font-weight: 600;
+    margin-bottom: var(--space-sm);
+  }
+
+  .page-subtitle {
+    font-size: var(--text-md);
+    color: var(--color-text-tertiary);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  @media (max-width: 640px) {
+    .projects-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
