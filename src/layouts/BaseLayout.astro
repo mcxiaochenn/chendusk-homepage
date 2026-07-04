@@ -58,9 +58,18 @@ const {
   {/* 页脚 */}
   <footer class="footer">
     <div class="container footer-inner">
-      <span class="footer-text">{siteConfig.footer.copyright}</span>
+      <span class="footer-text">
+        {siteConfig.footer.copyright}
+        <a href={siteConfig.footer.authorUrl} target="_blank" rel="noopener noreferrer">{siteConfig.footer.authorName}</a>
+      </span>
       <span class="footer-sep">·</span>
-      <span class="footer-text">{siteConfig.footer.poweredBy}</span>
+      <span class="footer-text">
+        <a href={siteConfig.footer.themeUrl}>{siteConfig.footer.themeName}</a>
+      </span>
+      <span class="footer-sep">·</span>
+      <span class="footer-text">
+        Powered by <a href={siteConfig.footer.poweredByUrl} target="_blank" rel="noopener noreferrer">{siteConfig.footer.poweredByName}</a>
+      </span>
     </div>
   </footer>
 </body>
@@ -142,6 +151,16 @@ const {
   .footer-text {
     font-size: var(--text-sm);
     color: var(--color-text-quaternary);
+  }
+
+  .footer-text a {
+    color: var(--color-text-quaternary);
+    text-decoration: none;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  .footer-text a:hover {
+    color: var(--color-primary);
   }
 
   .footer-sep {

@@ -116,7 +116,12 @@ export const siteConfig = {
 
   /* ===== 页脚 ===== */
   footer: {
-    copyright: '© 2026 辰渊尘 ChenDusk',
-    poweredBy: 'Powered by Astro',
+    copyright: '© 2026',
+    authorName: '辰渊尘（ChenDusk）',
+    authorUrl: 'https://github.com/mcxiaochenn',
+    themeName: 'xcTheme',
+    themeUrl: '/',
+    poweredByName: 'Astro',
+    poweredByUrl: 'https://astro.build/',
   },
 };
