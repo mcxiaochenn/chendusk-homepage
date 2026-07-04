@@ -40,19 +40,16 @@ site.config.ts ← imported by all pages and components
     ├── BaseLayout.astro ← imports site.config + global.css
     │       ↑ wrapped by all pages
     │       ├── index.astro ← inline hero + ProjectCard
-    │       ├── projects.astro ← ProjectCard
-    │       └── about.astro
+    │       └── projects.astro ← ProjectCard
     └── ProjectCard.astro ← pure Props, does NOT import siteConfig
 ```
 
 **Pages**:
 - `index.astro` — 双栏 Hero（左文右头像面板）+ 项目展示网格。参考 liushen.fun 布局
 - `projects.astro` — 项目列表
-- `about.astro` — 个人介绍、统计、兴趣、技能、联系方式
 
 **Components**:
 - `ProjectCard.astro` — 虚线边框卡片，接收 Props (name, description, url, language, stars, delay)；`langColors` 硬编码映射
-- `AvatarCard.astro` / `SkillTags.astro` — 旧组件，当前未被首页使用
 
 **Layout**: `BaseLayout.astro` — 固定导航栏 + 页脚 + 主题切换按钮 + 防闪烁脚本
 
@@ -89,7 +86,7 @@ CSS 变量通过 `:root` / `:root.dark` 双套定义：
 ### Layout
 
 - **Container**: `max-width: min(90vw, 1200px)` — 视口自适应
-- **Font**: MiSans via jsDelivr CDN (Regular 400 + Semibold 600)
+- **Font**: MiSans 本地自托管 `public/fonts/`（Regular 400 + Semibold 600），零 CDN 依赖
 - **Background glow**: 3 个 oklch 色彩模糊圆，深色 8% / 浅色 25% 不透明度
 
 ## Key Patterns
@@ -101,10 +98,17 @@ CSS 变量通过 `:root` / `:root.dark` 双套定义：
 - 面板宽度由 panel-info 文本内容决定，头像 `max-width: 320px` 同步
 - 导航栏不用 `glass-highlight`（其 `overflow:hidden` 会破坏 `backdrop-filter`）
 
-## CI / CD (`.github/workflows/deploy.yml`)
+## CI / CD
 
+### `.github/workflows/deploy.yml`（构建部署）
 - 触发：push 到 `master` 或手动 `workflow_dispatch`
 - 流程：checkout → Node 22 → `npm ci` → `npm run build`
-- **page 分支**：`peaceiris/actions-gh-pages` force push 构建产物
+- **page 分支**：`peaceiris/actions-gh-pages@v4`（`force_orphan: true`）force push 构建产物
 - **SSH 部署**：由 `.github/deploy.config.yml` 中 `ssh_enabled: true/false` 控制，默认关闭
 - SSH 使用 `appleboy/scp-action`，私钥等通过 GitHub Secrets 透传（`DEPLOY_HOST` / `DEPLOY_USER` / `DEPLOY_KEY` / `DEPLOY_PORT` / `DEPLOY_PATH`）
+
+### `.github/workflows/release.yml`（自动发版）
+- 触发：push `v*` tag（如 `v1.1.0`）
+- 流程：checkout → Node 22 → `npm ci` → `npm run build` → 打包 `dist/` 为 `tar.gz` → `softprops/action-gh-release@v2` 创建 Release
+- `generate_release_notes: true` 自动生成 Release Notes（基于 commits + PR）
+- 发版命令：`git tag -a v1.x.x -m 'v1.x.x' && git push origin v1.x.x`
