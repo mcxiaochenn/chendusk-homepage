@@ -5,9 +5,9 @@
 
 export const siteConfig = {
   /* ===== 基本信息 ===== */
-  name: '辰渊尘笔记-个人主页',
-  title: '辰渊尘 | ChenDusk',
-  description: '05后开发者，喜欢什么就做什么',
+  name: '技术漫记-辰渊尘站-个人主页',
+  title: '技术漫记-辰渊尘站-个人主页',
+  description: '辰渊尘-ChenDusk，05后开发者，喜欢什么就做什么',
   lang: 'zh-CN',
 
   /* ===== 个人信息 ===== */
@@ -117,7 +117,7 @@ export const siteConfig = {
 
   /* ===== 页脚 ===== */
   footer: {
-    copyright: '© 2026',
+    copyright: '© 2026 ',
     authorName: '辰渊尘（ChenDusk）',
     authorUrl: 'https://github.com/mcxiaochenn',
     poweredBy: 'Powered by Astro · xcTheme',
