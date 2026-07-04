@@ -58,11 +58,11 @@ site.config.ts ← imported by all pages and components
 
 ## Theme System
 
-三档主题切换（auto / light / dark）：
-- **Auto**（默认）：跟随系统 `prefers-color-scheme`
-- **手动选择**：存入 `localStorage('theme')`，优先级高于系统设置
-- **防闪烁**：`<head>` 内 `<script is:inline>` 在渲染前同步设置 `.dark` 类
-- 导航栏右侧太阳/月亮图标切换，CSS 变量驱动动画
+三档主题循环切换（auto → light → dark → auto）：
+- **Auto**（默认）：跟随系统 `prefers-color-scheme`，localStorage 不存储
+- **Light / Dark**：手动选择，存入 `localStorage('theme')`，优先级高于系统设置
+- **防闪烁**：`<head>` 内 `<script is:inline>` 在渲染前同步设置 `.dark` 类 + `data-theme-mode` 属性
+- 导航栏右侧三个图标（🖥️ auto / ☀️ light / 🌙 dark），通过 `data-theme-mode` CSS 属性控制显隐和旋转动画
 
 ## Design System (`src/styles/global.css`)
 
@@ -96,6 +96,15 @@ CSS 变量通过 `:root` / `:root.dark` 双套定义：
 
 - `ProjectCard` 使用虚线边框 + 毛玻璃（非旧版 glass-card）
 - 首页 Hero 是内联双栏布局，不使用 AvatarCard/SkillTags 组件
-- 导航图标使用 `<img src="/favicon.ico">`，非文字图标
+- 导航图标使用 Astro Image 组件，favicon 从 `src/assets/favicon.ico` 导入
 - 页脚链接：作者 GitHub / Astro 官网 / xcTheme 首页 / ICP 备案号
 - 面板宽度由 panel-info 文本内容决定，头像 `max-width: 320px` 同步
+- 导航栏不用 `glass-highlight`（其 `overflow:hidden` 会破坏 `backdrop-filter`）
+
+## CI / CD (`.github/workflows/deploy.yml`)
+
+- 触发：push 到 `master` 或手动 `workflow_dispatch`
+- 流程：checkout → Node 22 → `npm ci` → `npm run build`
+- **page 分支**：`peaceiris/actions-gh-pages` force push 构建产物
+- **SSH 部署**：由 `.github/deploy.config.yml` 中 `ssh_enabled: true/false` 控制，默认关闭
+- SSH 使用 `appleboy/scp-action`，私钥等通过 GitHub Secrets 透传（`DEPLOY_HOST` / `DEPLOY_USER` / `DEPLOY_KEY` / `DEPLOY_PORT` / `DEPLOY_PATH`）
