@@ -18,7 +18,7 @@ export const siteConfig = {
     pronouns: 'he/him',
     mbti: 'INTP-T',
     birthYear: 2009,
-    avatar: '/avatar-placeholder.svg', // 替换为你的头像: /avatar.webp
+    avatar: '/avatar.webp',
     bio: '05后 · 半吊子搞机玩家 · 喜欢什么就做什么',
     motto: '有志不在年高，无志空活百岁',
     location: '中国 · 浙江嘉兴',
