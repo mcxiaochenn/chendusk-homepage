@@ -25,8 +25,9 @@ const {
     (function() {
       var stored = localStorage.getItem('theme');
       var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      var theme = stored || (prefersDark ? 'dark' : 'light');
-      if (theme === 'dark') document.documentElement.classList.add('dark');
+      var isDark = stored === 'dark' || (!stored && prefersDark);
+      if (isDark) document.documentElement.classList.add('dark');
+      document.documentElement.setAttribute('data-theme-mode', stored || 'auto');
     })();
   </script>
 
@@ -59,6 +60,12 @@ const {
           ))}
         </div>
         <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
+          {/* 自动图标 (跟随系统显示) */}
+          <svg class="icon-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
           {/* 太阳图标 (浅色模式显示) */}
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="5"/>
@@ -108,15 +115,17 @@ const {
     (function() {
       var btn = document.getElementById('theme-toggle');
       if (!btn) return;
+      var modes = ['auto', 'light', 'dark'];
 
-      function getEffectiveTheme() {
-        var stored = localStorage.getItem('theme');
-        if (stored) return stored;
-        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      function getMode() {
+        return localStorage.getItem('theme') || 'auto';
       }
 
-      function applyTheme(theme) {
-        if (theme === 'dark') {
+      function applyTheme(mode) {
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var isDark = mode === 'dark' || (mode === 'auto' && prefersDark);
+        document.documentElement.setAttribute('data-theme-mode', mode);
+        if (isDark) {
           document.documentElement.classList.add('dark');
         } else {
           document.documentElement.classList.remove('dark');
@@ -124,17 +133,19 @@ const {
       }
 
       btn.addEventListener('click', function() {
-        var current = getEffectiveTheme();
-        var next = current === 'dark' ? 'light' : 'dark';
-        localStorage.setItem('theme', next);
+        var current = getMode();
+        var next = modes[(modes.indexOf(current) + 1) % 3];
+        if (next === 'auto') {
+          localStorage.removeItem('theme');
+        } else {
+          localStorage.setItem('theme', next);
+        }
         applyTheme(next);
       });
 
-      // 监听系统主题变化 (当用户未手动选择时自动跟随)
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-        if (!localStorage.getItem('theme')) {
-          applyTheme(e.matches ? 'dark' : 'light');
-        }
+      // 监听系统主题变化 (auto 模式下自动跟随)
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
+        if (getMode() === 'auto') applyTheme('auto');
       });
     })();
   </script>
@@ -238,6 +249,31 @@ const {
   .footer-sep {
     color: var(--text-color-25);
   }
+
+  /* ===== 主题切换图标显隐 ===== */
+  .theme-toggle .icon-auto,
+  .theme-toggle .icon-sun,
+  .theme-toggle .icon-moon {
+    position: absolute;
+    width: 18px;
+    height: 18px;
+    transition: opacity var(--duration-fast) var(--ease-out),
+                transform var(--duration-fast) var(--ease-out);
+  }
+
+  /* 默认隐藏全部 */
+  .theme-toggle .icon-auto { opacity: 0; transform: scale(0.5) rotate(90deg); }
+  .theme-toggle .icon-sun  { opacity: 0; transform: scale(0.5) rotate(-90deg); }
+  .theme-toggle .icon-moon { opacity: 0; transform: scale(0.5) rotate(90deg); }
+
+  /* auto 模式：显示 auto 图标 */
+  :root[data-theme-mode="auto"] .theme-toggle .icon-auto { opacity: 1; transform: scale(1) rotate(0deg); }
+
+  /* light 模式：显示 sun 图标 */
+  :root[data-theme-mode="light"] .theme-toggle .icon-sun { opacity: 1; transform: scale(1) rotate(0deg); }
+
+  /* dark 模式：显示 moon 图标 */
+  :root[data-theme-mode="dark"] .theme-toggle .icon-moon { opacity: 1; transform: scale(1) rotate(0deg); }
 
   /* 为 fixed 导航栏留出空间 */
   main {

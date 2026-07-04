@@ -46,8 +46,6 @@
   --glow-strong: 0 0 0 1px rgba(0, 0, 0, 0.12),
                  0 0 30px -5px oklch(0.70 0.09 var(--hue) / 0.20);
 
-  --display-light-icon: 1;
-  --display-dark-icon: 0;
 }
 
 /* 深色模式变量 */
@@ -81,8 +79,6 @@
   --glow-strong: 0 0 0 1px rgba(255, 255, 255, 0.15),
                  0 0 30px -5px oklch(0.75 0.09 var(--hue) / 0.25);
 
-  --display-light-icon: 0;
-  --display-dark-icon: 1;
 }
 
 /* ===== CSS 变量 (与主题无关的令牌) ===== */
@@ -338,25 +334,6 @@ img {
 .theme-toggle:hover {
   color: var(--primary);
   background: var(--btn-regular-bg);
-}
-
-.theme-toggle .icon-sun,
-.theme-toggle .icon-moon {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  transition: opacity var(--duration-fast) var(--ease-out),
-              transform var(--duration-fast) var(--ease-out);
-}
-
-.theme-toggle .icon-sun {
-  opacity: var(--display-light-icon);
-  transform: scale(calc(0.5 + 0.5 * var(--display-light-icon))) rotate(calc(-90deg * (1 - var(--display-light-icon))));
-}
-
-.theme-toggle .icon-moon {
-  opacity: var(--display-dark-icon);
-  transform: scale(calc(0.5 + 0.5 * var(--display-dark-icon))) rotate(calc(90deg * (1 - var(--display-dark-icon))));
 }
 
 /* ===== 响应式 ===== */
