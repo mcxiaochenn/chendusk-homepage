@@ -271,7 +271,6 @@ const { profile, socials, skills, projects } = siteConfig;
     font-size: var(--text-md);
     color: var(--text-color-75);
     line-height: 1.7;
-    max-width: 480px;
   }
 
   .hero-motto {
@@ -421,15 +420,13 @@ const { profile, socials, skills, projects } = siteConfig;
     background: var(--glass-bg);
     backdrop-filter: blur(var(--glass-blur));
     padding: var(--space-md) var(--space-lg);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     transition: all var(--duration-normal) var(--ease-out);
   }
 
   .panel-info-inner {
     display: flex;
     gap: var(--space-xl);
+    flex-wrap: wrap;
   }
 
   .panel-label {
@@ -495,12 +492,11 @@ const { profile, socials, skills, projects } = siteConfig;
     font-size: var(--text-md);
     color: var(--text-color-50);
     margin-bottom: var(--space-2xl);
-    max-width: 480px;
   }
 
   .projects-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: var(--space-lg);
   }
 

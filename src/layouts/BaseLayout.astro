@@ -149,7 +149,7 @@ const {
     left: 50%;
     transform: translateX(-50%);
     width: calc(100% - var(--space-xl) * 2);
-    max-width: 960px;
+    max-width: min(90vw, 1200px);
     z-index: 100;
     padding: var(--space-sm) var(--space-md);
   }
@@ -217,6 +217,7 @@ const {
     justify-content: center;
     gap: var(--space-sm);
     flex-wrap: wrap;
+    text-align: center;
   }
 
   .footer-text {

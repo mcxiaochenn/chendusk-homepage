@@ -257,7 +257,7 @@ img {
 /* ===== 容器 ===== */
 .container {
   width: 100%;
-  max-width: 960px;
+  max-width: min(90vw, 1200px);
   margin: 0 auto;
   padding: 0 var(--space-lg);
 }
