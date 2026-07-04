@@ -4,13 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ChenDusk's personal homepage built with Astro 7.x. The site uses a HyperOS × Liquid Glass design system — a fusion of MIUIX/HyperOS (Squircle corners, deep dark mode, press feedback, MiSans font) and iOS 26 Liquid Glass (glassmorphism, edge highlights, dual-layer architecture, fluid animations).
-
-Design references: [MIUIX](https://compose-miuix-ui.github.io/miuix/zh_CN/) · [Liquid Glass](https://zh.wikipedia.org/zh-cn/Liquid_Glass)
+ChenDusk (辰渊尘) 的个人主页，使用 Astro 7.x 构建。设计融合 HyperOS/MIUIX 与 Liquid Glass 风格，配色采用与博客 (blog.mcxiaochen.top) 同款 oklch 色系 (hue=170)。
 
 ## ⚠️ 铁律：禁止自行 Push
 
-**除非用户在对话中明确说出"push"、"推送到远程"等指令，否则绝对不要执行 `git push`。** 这条规则没有任何例外——即使刚刚完成了大量修改、即使用户要求了 commit，也必须等用户主动发出 push 指令才能推送。违反此规则是不可接受的。
+**除非用户在对话中明确说出"push"、"推送到远程"等指令，否则绝对不要执行 `git push`。** 这条规则没有任何例外——即使刚刚完成了大量修改、即使用户要求了 commit，也必须等用户主动发出 push 指令才能推送。
 
 ## Commands
 
@@ -22,87 +20,82 @@ npm run preview  # Preview production build locally
 
 No test framework or linter is configured.
 
-**TypeScript**: `tsconfig.json` extends `astro/tsconfigs/strict` — all strict type-checking options are enabled.
+**TypeScript**: `tsconfig.json` extends `astro/tsconfigs/strict`.
+
+## Network Proxy
+
+如遇网络问题，临时使用代理（不写入全局配置）：
+```bash
+git -c http.proxy=http://127.0.0.1:7897 ...
+HTTPS_PROXY=http://127.0.0.1:7897 curl ...
+```
 
 ## Architecture
 
-**Content-driven architecture**: All site content lives in `src/site.config.ts`. To update profile info, projects, skills, or about page text, edit that single file — no page code changes needed.
+**Content-driven**: 所有站点内容集中在 `src/site.config.ts`，修改此文件即可更新全站。
 
 **Dependency graph**:
 ```
 site.config.ts ← imported by all pages and components
     ├── BaseLayout.astro ← imports site.config + global.css
     │       ↑ wrapped by all pages
-    │       ├── index.astro ← imports AvatarCard, SkillTags, ProjectCard
-    │       ├── projects.astro ← imports ProjectCard
+    │       ├── index.astro ← inline hero + ProjectCard
+    │       ├── projects.astro ← ProjectCard
     │       └── about.astro
-    ├── AvatarCard.astro ← reads profile, socials
-    ├── SkillTags.astro ← reads skills
     └── ProjectCard.astro ← pure Props, does NOT import siteConfig
 ```
 
-**Pages** (in `src/pages/`):
-- `index.astro` — Homepage: AvatarCard + SkillTags + ProjectCard grid
-- `projects.astro` — Full project listing with subtitle
-- `about.astro` — Bio, stats (3-col grid), interests list, skills, contact grid; uses 5-level staggered animation delays
+**Pages**:
+- `index.astro` — 双栏 Hero（左文右头像面板）+ 项目展示网格。参考 liushen.fun 布局
+- `projects.astro` — 项目列表
+- `about.astro` — 个人介绍、统计、兴趣、技能、联系方式
 
-**Components** (in `src/components/`):
-- `AvatarCard.astro` — Hero card with squircle avatar, pulse-ring animation, meta info, social buttons
-- `SkillTags.astro` — Flex-wrap pill tags from `siteConfig.skills`
-- `ProjectCard.astro` — Receives all data via Props (name, description, url, language, stars, delay); has hardcoded `langColors` map for Go/JS/Dart/TS
+**Components**:
+- `ProjectCard.astro` — 虚线边框卡片，接收 Props (name, description, url, language, stars, delay)；`langColors` 硬编码映射
+- `AvatarCard.astro` / `SkillTags.astro` — 旧组件，当前未被首页使用
 
-**Layout**: `BaseLayout.astro` wraps all pages. Accepts optional `title` and `description` props (defaults from siteConfig). Contains fixed-position glassmorphism navbar and footer.
+**Layout**: `BaseLayout.astro` — 固定导航栏 + 页脚 + 主题切换按钮 + 防闪烁脚本
+
+## Theme System
+
+三档主题切换（auto / light / dark）：
+- **Auto**（默认）：跟随系统 `prefers-color-scheme`
+- **手动选择**：存入 `localStorage('theme')`，优先级高于系统设置
+- **防闪烁**：`<head>` 内 `<script is:inline>` 在渲染前同步设置 `.dark` 类
+- 导航栏右侧太阳/月亮图标切换，CSS 变量驱动动画
 
 ## Design System (`src/styles/global.css`)
 
-### Design Fusion Strategy
+### Color Tokens (oklch, hue=170)
 
-| From MIUIX/HyperOS | From Liquid Glass |
-|--------------------|-------------------|
-| Squircle corners | Dual-layer architecture (functional + content) |
-| Deep dark mode (#000000) | Glassmorphism (backdrop-filter) |
-| Press scale feedback (Sink) | Edge highlight gradients |
-| MiSans font | Fluid entrance animations |
-| 14-level type scale | Restrained color, content penetrates UI |
-| Layered container colors | Scroll edge effects (reserved) |
+CSS 变量通过 `:root` / `:root.dark` 双套定义：
+
+| Token | Light | Dark | 用途 |
+|-------|-------|------|------|
+| `--primary` | oklch(0.70 0.09 h) | oklch(0.75 0.09 h) | 主色 |
+| `--page-bg` | oklch(0.95 0.01 h) | oklch(0.14 0.014 h) | 页面背景 |
+| `--text-color` | oklch(0.25 0.02 h) | oklch(0.90 0.01 h) | 主文字 |
+| `--text-color-75/50/25` | — | — | 75%/50%/25% 不透明度文字 |
+| `--glass-bg` | rgba(255,255,255,0.60) | rgba(255,255,255,0.05) | 毛玻璃背景 |
+| `--line-divider` | rgba(0,0,0,0.08) | rgba(255,255,255,0.08) | 分隔线 |
 
 ### Key CSS Classes
 
-- `.glass-card` — Glassmorphism container: `backdrop-filter: blur(20px)`, semi-transparent bg/border, glow shadow
-- `.glass-card:hover` — Enhanced bg/border opacity + soft glow
-- `.glass-card.pressable` — Adds cursor:pointer; `:active` scales to 0.97 (MIUIX Sink)
-- `.glass-highlight` — Use WITH `.glass-card`; adds `::before` pseudo-element with gradient border highlight via `mask-composite: exclude`
-- `.squircle` / `.squircle-sm` / `.squircle-xl` — Border-radius: 24px / 12px / 32px
-- `.tag` — Pill-shaped glass tag (999px radius)
-- `.container` — Max-width 960px, centered
-- `.section` — Vertical padding 64px
-- `.animate-in` — `fade-in-up` 500ms with spring easing; `.animate-in-delay-{1-5}` adds 100–500ms stagger
+- `.glass-card` — 毛玻璃容器，hover 增强光晕
+- `.glass-highlight` — 边缘高光渐变 `::before` 伪元素
+- `.pressable` — MIUIX Sink 按压反馈 `scale(0.97)`
+- `.animate-in` + `.animate-in-delay-{1-5}` — fade-in-up 入场动画
 
-### Design Token Highlights
+### Layout
 
-- **Colors**: Pure black bg (#000000), MIUIX primary blue (#3482ff), 4-level text opacity (100%/80%/60%/40%)
-- **Glass**: bg rgba(255,255,255,0.05), border rgba(255,255,255,0.10), blur 20px/40px
-- **Glow**: 3 levels (subtle/soft/strong) using box-shadow with blue tint
-- **Typography**: MiSans font family; 9 sizes from 11px (footnote2) to 32px (title1); 17sp base is larger than Material's 16sp for CJK readability
-- **Animation**: Spring easing `cubic-bezier(0.22, 1, 0.36, 1)` from HyperOS physics; 3 durations (200/350/500ms)
-
-### Body Background Effect
-
-Two radial gradients on `body` create subtle blue ambient glow, simulating Liquid Glass light scatter:
-```css
-radial-gradient(ellipse at 50% 0%, rgba(52,130,255,0.08) 0%, transparent 60%)
-radial-gradient(ellipse at 80% 80%, rgba(52,130,255,0.04) 0%, transparent 50%)
-```
+- **Container**: `max-width: min(90vw, 1200px)` — 视口自适应
+- **Font**: MiSans via jsDelivr CDN (Regular 400 + Semibold 600)
+- **Background glow**: 3 个 oklch 色彩模糊圆，深色 8% / 浅色 25% 不透明度
 
 ## Key Patterns
 
-- `AvatarCard`, `SkillTags`, `about.astro` import directly from `site.config.ts`; `ProjectCard` uses Props instead
-- Language colors in ProjectCard are a hardcoded `Record<string, string>` map (Go, JS, Dart, TS)
-- All Chinese UI text is inline in templates (no i18n)
-- Navbar uses `position: fixed` + `backdrop-filter: blur(40px)` (heavy blur) to implement the Liquid Glass functional layer floating above content
-- MiSans loaded via jsDelivr CDN (Regular 400 + Semibold 600)
-- Avatar is currently a placeholder SVG; replace by updating `siteConfig.profile.avatar`
-
-## Known Issues
-
-- **Node.js Windows assertion**: After `npm run build`, may see `Assertion failed: !(handle->flags & UV_HANDLE_CLOSING)` — this is a known Node.js/UV bug on Windows. Build output in `dist/` is unaffected.
+- `ProjectCard` 使用虚线边框 + 毛玻璃（非旧版 glass-card）
+- 首页 Hero 是内联双栏布局，不使用 AvatarCard/SkillTags 组件
+- 导航图标使用 `<img src="/favicon.ico">`，非文字图标
+- 页脚链接：作者 GitHub / Astro 官网 / xcTheme 首页 / ICP 备案号
+- 面板宽度由 panel-info 文本内容决定，头像 `max-width: 320px` 同步
