@@ -119,9 +119,10 @@ export const siteConfig = {
     copyright: '© 2026',
     authorName: '辰渊尘（ChenDusk）',
     authorUrl: 'https://github.com/mcxiaochenn',
-    themeName: 'xcTheme',
-    themeUrl: '/',
-    poweredByName: 'Astro',
+    poweredBy: 'Powered by Astro · xcTheme',
     poweredByUrl: 'https://astro.build/',
+    themeUrl: '/',
+    icp: '浙ICP备2026011009号',
+    icpUrl: 'https://beian.miit.gov.cn/',
   },
 };
