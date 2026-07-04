@@ -6,11 +6,17 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Read deploy config
+        id: config
+        run: |
+          enabled=$(grep 'ssh_enabled:' .github/deploy.config.yml | awk '{print $2}')
+          echo "ssh_enabled=$enabled" >> "$GITHUB_OUTPUT"
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -25,6 +31,7 @@ jobs:
         run: npm run build
 
       - name: Deploy via SSH
+        if: steps.config.outputs.ssh_enabled == 'true'
         uses: appleboy/scp-action@v0.1.7
         with:
           host: ${{ secrets.DEPLOY_HOST }}
