@@ -4,42 +4,89 @@
  * 设计理念:
  *   MIUIX/HyperOS → Squircle圆角、深色模式、分层容器、按压反馈
  *   Liquid Glass  → 毛玻璃透明、边缘高光、双层架构、流体动画
+ *   配色方案      → 与博客 (blog.mcxiaochen.top) 同款 oklch 色系，hue=170
  */
 
-/* ===== CSS 变量 (主题令牌) ===== */
+/* ===== 主题切换 — 三档：auto / light / dark ===== */
+
+/* 自动模式：跟随系统 (默认) */
 :root {
-  /* 主色调 — MIUIX Primary Blue */
-  --color-primary: #3482ff;
-  --color-primary-variant: #0073dd;
+  --hue: 170;
+  color-scheme: light dark;
+}
 
-  /* 背景层级 — Liquid Glass 双层架构 */
-  --color-bg: #000000;
-  --color-bg-elevated: #0a0a0a;
-  --color-surface: #111111;
-  --color-surface-high: #1a1a1a;
-  --color-surface-highest: #242424;
+/* 浅色模式变量 */
+:root,
+:root[data-theme="light"] {
+  --primary: oklch(0.70 0.09 var(--hue));
+  --page-bg: oklch(0.95 0.01 var(--hue));
+  --card-bg: oklch(0.98 0.005 var(--hue));
+  --card-bg-solid: white;
+  --text-color: oklch(0.25 0.02 var(--hue));
+  --text-color-75: oklch(0.35 0.02 var(--hue));
+  --text-color-50: oklch(0.50 0.02 var(--hue));
+  --text-color-25: oklch(0.65 0.015 var(--hue));
+  --btn-content: oklch(0.55 0.08 var(--hue));
+  --btn-regular-bg: oklch(0.95 0.025 var(--hue));
+  --btn-regular-bg-hover: oklch(0.90 0.05 var(--hue));
+  --line-divider: rgba(0, 0, 0, 0.08);
+  --line-color: rgba(0, 0, 0, 0.1);
+  --selection-bg: oklch(0.90 0.035 var(--hue));
 
-  /* 文字层级 — MIUIX 不透明度阶梯 */
-  --color-text: #ffffff;
-  --color-text-secondary: rgba(255, 255, 255, 0.80);
-  --color-text-tertiary: rgba(255, 255, 255, 0.60);
-  --color-text-quaternary: rgba(255, 255, 255, 0.40);
+  /* Liquid Glass — 浅色模式 */
+  --glass-bg: rgba(255, 255, 255, 0.60);
+  --glass-bg-hover: rgba(255, 255, 255, 0.75);
+  --glass-border: rgba(0, 0, 0, 0.08);
+  --glass-border-hover: rgba(0, 0, 0, 0.14);
+  --glass-blur: 20px;
+  --glass-blur-heavy: 40px;
+  --glow-subtle: 0 0 0 1px rgba(0, 0, 0, 0.05);
+  --glow-soft: 0 0 0 1px rgba(0, 0, 0, 0.08),
+               0 0 20px -5px oklch(0.70 0.09 var(--hue) / 0.12);
+  --glow-strong: 0 0 0 1px rgba(0, 0, 0, 0.12),
+                 0 0 30px -5px oklch(0.70 0.09 var(--hue) / 0.20);
 
-  /* 毛玻璃 — Liquid Glass 核心 */
+  --display-light-icon: 1;
+  --display-dark-icon: 0;
+}
+
+/* 深色模式变量 */
+:root.dark,
+:root[data-theme="dark"] {
+  --primary: oklch(0.75 0.09 var(--hue));
+  --page-bg: oklch(0.14 0.014 var(--hue));
+  --card-bg: oklch(0.20 0.015 var(--hue));
+  --card-bg-solid: oklch(0.20 0.015 var(--hue));
+  --text-color: oklch(0.90 0.01 var(--hue));
+  --text-color-75: oklch(0.75 0.015 var(--hue));
+  --text-color-50: oklch(0.60 0.015 var(--hue));
+  --text-color-25: oklch(0.45 0.01 var(--hue));
+  --btn-content: oklch(0.75 0.07 var(--hue));
+  --btn-regular-bg: oklch(0.30 0.035 var(--hue));
+  --btn-regular-bg-hover: oklch(0.35 0.04 var(--hue));
+  --line-divider: rgba(255, 255, 255, 0.08);
+  --line-color: rgba(255, 255, 255, 0.1);
+  --selection-bg: oklch(0.40 0.055 var(--hue));
+
+  /* Liquid Glass — 深色模式 */
   --glass-bg: rgba(255, 255, 255, 0.05);
   --glass-bg-hover: rgba(255, 255, 255, 0.08);
   --glass-border: rgba(255, 255, 255, 0.10);
   --glass-border-hover: rgba(255, 255, 255, 0.18);
   --glass-blur: 20px;
   --glass-blur-heavy: 40px;
-
-  /* 边缘高光 — Liquid Glass 发光边缘 */
   --glow-subtle: 0 0 0 1px rgba(255, 255, 255, 0.06);
   --glow-soft: 0 0 0 1px rgba(255, 255, 255, 0.10),
-               0 0 20px -5px rgba(52, 130, 255, 0.15);
+               0 0 20px -5px oklch(0.75 0.09 var(--hue) / 0.15);
   --glow-strong: 0 0 0 1px rgba(255, 255, 255, 0.15),
-                 0 0 30px -5px rgba(52, 130, 255, 0.25);
+                 0 0 30px -5px oklch(0.75 0.09 var(--hue) / 0.25);
 
+  --display-light-icon: 0;
+  --display-dark-icon: 1;
+}
+
+/* ===== CSS 变量 (与主题无关的令牌) ===== */
+:root {
   /* Squircle 圆角 — MIUIX 连续曲率 */
   --radius-sm: 12px;
   --radius-md: 18px;
@@ -91,31 +138,33 @@
 html {
   font-family: var(--font-sans);
   font-size: 16px;
-  color: var(--color-text);
-  background: var(--color-bg);
+  color: var(--text-color);
+  background: var(--page-bg);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  transition: background var(--duration-normal) var(--ease-out),
+              color var(--duration-normal) var(--ease-out);
 }
 
 body {
   min-height: 100vh;
   line-height: 1.6;
   overflow-x: hidden;
-  /* 全局微渐变背景 */
-  background-image:
-    radial-gradient(ellipse at 50% 0%, rgba(52, 130, 255, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse at 80% 80%, rgba(52, 130, 255, 0.04) 0%, transparent 50%);
+}
+
+::selection {
+  background: var(--selection-bg);
 }
 
 a {
-  color: var(--color-primary);
+  color: var(--primary);
   text-decoration: none;
   transition: color var(--duration-fast) var(--ease-out);
 }
 
 a:hover {
-  color: var(--color-primary-variant);
+  color: var(--btn-content);
 }
 
 img {
@@ -182,6 +231,16 @@ img {
   pointer-events: none;
 }
 
+:root:not(.dark) .glass-highlight::before {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.50) 0%,
+    rgba(255, 255, 255, 0.10) 40%,
+    rgba(255, 255, 255, 0.0) 60%,
+    rgba(255, 255, 255, 0.20) 100%
+  );
+}
+
 /* ===== Squircle 形状 (CSS 近似) ===== */
 .squircle {
   border-radius: var(--radius-lg);
@@ -212,7 +271,7 @@ img {
   font-size: var(--text-3xl);
   font-weight: 600;
   margin-bottom: var(--space-lg);
-  color: var(--color-text);
+  color: var(--text-color);
 }
 
 /* ===== 标签 (Skill Tags) ===== */
@@ -221,19 +280,16 @@ img {
   align-items: center;
   padding: var(--space-xs) var(--space-md);
   font-size: var(--text-sm);
-  color: var(--color-text-secondary);
-  background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  color: var(--btn-content);
+  background: var(--btn-regular-bg);
+  border: 1px solid var(--line-divider);
   border-radius: 999px;
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   transition: all var(--duration-fast) var(--ease-out);
 }
 
 .tag:hover {
-  background: var(--glass-bg-hover);
-  border-color: var(--glass-border-hover);
-  color: var(--color-text);
+  background: var(--btn-regular-bg-hover);
+  color: var(--primary);
 }
 
 /* ===== 流体动画入场 ===== */
@@ -262,6 +318,46 @@ img {
 .animate-in-delay-3 { animation-delay: 300ms; }
 .animate-in-delay-4 { animation-delay: 400ms; }
 .animate-in-delay-5 { animation-delay: 500ms; }
+
+/* ===== 主题切换按钮 ===== */
+.theme-toggle {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  color: var(--text-color-75);
+  border-radius: 50%;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.theme-toggle:hover {
+  color: var(--primary);
+  background: var(--btn-regular-bg);
+}
+
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  transition: opacity var(--duration-fast) var(--ease-out),
+              transform var(--duration-fast) var(--ease-out);
+}
+
+.theme-toggle .icon-sun {
+  opacity: var(--display-light-icon);
+  transform: scale(calc(0.5 + 0.5 * var(--display-light-icon))) rotate(calc(-90deg * (1 - var(--display-light-icon))));
+}
+
+.theme-toggle .icon-moon {
+  opacity: var(--display-dark-icon);
+  transform: scale(calc(0.5 + 0.5 * var(--display-dark-icon))) rotate(calc(90deg * (1 - var(--display-dark-icon))));
+}
 
 /* ===== 响应式 ===== */
 @media (max-width: 768px) {
