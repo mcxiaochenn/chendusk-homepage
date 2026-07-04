@@ -24,7 +24,7 @@ const color = langColors[language] ?? '#888';
   href={url}
   target="_blank"
   rel="noopener noreferrer"
-  class:list={['project-card', 'glass-card', 'glass-highlight', 'pressable', 'squircle-lg', 'animate-in', `animate-in-delay-${delay}`]}
+  class:list={['project-card', 'animate-in', `animate-in-delay-${delay}`]}
 >
   <div class="project-header">
     <span class="project-icon">📁</span>
@@ -50,10 +50,23 @@ const color = langColors[language] ?? '#888';
     padding: var(--space-lg);
     text-decoration: none;
     color: var(--text-color);
+    border: 1px dashed var(--line-color);
+    border-radius: 1.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    transition: all var(--duration-normal) var(--ease-out);
+    cursor: pointer;
   }
 
-  .squircle-lg {
-    border-radius: var(--radius-lg);
+  .project-card:hover {
+    border-color: var(--primary);
+    background: var(--glass-bg-hover);
+    box-shadow: var(--glow-soft);
+    transform: translateY(-2px);
+  }
+
+  .project-card:active {
+    transform: scale(var(--press-scale));
   }
 
   .project-header {
