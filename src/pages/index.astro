@@ -87,8 +87,12 @@ const { profile, socials, skills, projects } = siteConfig;
               <p class="panel-label">SCHOOL</p>
               <p class="panel-value">{profile.school}</p>
             </div>
+            <div>
+              <p class="panel-label">BIRTHDAY</p>
+              <p class="panel-value">{profile.birthday.replace('-', '年').replace('-', '月') + '日'}</p>
+              <p class="panel-countdown" id="birthday-countdown" data-birthday={profile.birthday}></p>
+            </div>
           </div>
-          <img src="/favicon.svg" alt="Logo" class="panel-logo" />
         </div>
       </div>
     </div>
@@ -116,6 +120,35 @@ const { profile, socials, skills, projects } = siteConfig;
       </div>
     </div>
   </section>
+
+  {/* 生日倒计时脚本 */}
+  <script is:inline>
+    (function() {
+      var el = document.getElementById('birthday-countdown');
+      if (!el) return;
+      var birthday = el.getAttribute('data-birthday');
+      if (!birthday) return;
+      var parts = birthday.split('-');
+      var month = parseInt(parts[1], 10);
+      var day = parseInt(parts[2], 10);
+
+      function update() {
+        var now = new Date();
+        var year = now.getFullYear();
+        var next = new Date(year, month - 1, day);
+        if (next < now) next = new Date(year + 1, month - 1, day);
+        var diff = Math.ceil((next - now) / (1000 * 60 * 60 * 24));
+        if (diff === 0) {
+          el.textContent = '🎂 今天是我生日！';
+        } else {
+          el.textContent = '距生日还有 ' + diff + ' 天';
+        }
+      }
+
+      update();
+      setInterval(update, 60000);
+    })();
+  </script>
 </BaseLayout>
 
 <style>
@@ -414,15 +447,11 @@ const { profile, socials, skills, projects } = siteConfig;
     font-weight: 500;
   }
 
-  .panel-logo {
-    width: 5rem;
-    opacity: 0.6;
-    filter: invert(0);
-    transition: all var(--duration-normal) var(--ease-out);
-  }
-
-  :root.dark .panel-logo {
-    filter: invert(1) brightness(1.12);
+  .panel-countdown {
+    font-size: var(--text-xs);
+    color: var(--primary);
+    font-weight: 500;
+    margin-top: 2px;
   }
 
   /* ===== 分隔线 ===== */
