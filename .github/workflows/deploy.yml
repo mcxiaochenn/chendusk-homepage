@@ -30,6 +30,14 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Deploy to page branch
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: page
+          publish_dir: ./dist
+          force_orphan: true
+
       - name: Deploy via SSH
         if: steps.config.outputs.ssh_enabled == 'true'
         uses: appleboy/scp-action@v0.1.7
