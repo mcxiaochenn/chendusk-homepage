@@ -61,14 +61,14 @@ export const siteConfig = {
       description: 'Clash 分流规则聚合系统，自动从多个上游源获取规则，合并去重后发布为 YAML rule-provider 文件',
       url: 'https://github.com/mcxiaochenn/clash-rules-cn',
       language: 'Go',
-      stars: 168,
+      stars: 0,
     },
     {
       name: 'Clash_Override_Script_For_CN',
       description: 'mihomo 覆写脚本，基于 Loyalsoldier 规则集，支持按地区自动分组、AI 服务分流、广告过滤',
       url: 'https://github.com/mcxiaochenn/Clash_Override_Script_For_CN',
       language: 'JavaScript',
-      stars: 1,
+      stars: 0,
     },
     {
       name: 'myriad-monitor',
@@ -78,42 +78,6 @@ export const siteConfig = {
       stars: 0,
     },
   ],
-
-  /* ===== 关于页面 ===== */
-  about: {
-    intro: [
-      '大家好，我是辰渊尘（ChenDusk），也可以叫我小尘、阿尘、尘桑。2009年出生，浙江嘉兴平湖人，目前是一名职业类学校高二学生。',
-      '我是一个半吊子个人开发者，编程纯属爱好。MBTI 是 INTP-T，大众前社恐，实则慢热，和熟人比较放得开。',
-      '热爱折腾各种奇奇怪怪的东西，内容方向偏技术向和保姆级教程。座右铭：有志不在年高，无志空活百岁。',
-    ],
-    interests: [
-      '手机搞机（深度玩机玩家）',
-      '网络代理/分流工具开发',
-      '技术教程写作（保姆级教程）',
-      '开源工具开发',
-      '骑车 & 旅行',
-      '二次元（孤独摇滚、EVA、鬼灭之刃）',
-      'GalGame / Minecraft / 鸣潮',
-      '折腾 Linux（Arch Linux + Hyprland）',
-    ],
-    stats: {
-      repos: 44,
-      stars: 168,
-      contributions: 1271,
-    },
-    anime: ['孤独摇滚', '国家队 (DARLING in the FRANXX)', '晨曦公主', 'EVA', '鬼灭之刃'],
-    games: ['GalGame', 'Minecraft', 'CS', '明日方舟：终末地', '鸣潮'],
-    os: 'Arch Linux (曾用) / Windows (当前)',
-    blog: {
-      framework: 'Astro v7.0.0 (Mizuki theme)',
-      comments: 'Twikoo',
-      stats_tool: 'Umami',
-      deploy: 'EdgeOne (主力) + Cloudflare / Netlify / Vercel',
-      articles: 28,
-      words: 18713,
-    },
-    domains: ['mcxiaochen.top (当前)', 'mcxiaochen.icu (已弃用)', 'shuiarun.com (已作废)'],
-  },
 
   /* ===== 页脚 ===== */
   footer: {
