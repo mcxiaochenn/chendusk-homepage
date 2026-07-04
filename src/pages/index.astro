@@ -203,7 +203,7 @@ const { profile, socials, skills, projects } = siteConfig;
 
   .hero-inner {
     display: grid;
-    grid-template-columns: 1.4fr 0.6fr;
+    grid-template-columns: 1fr minmax(0, max-content);
     gap: var(--space-3xl);
     align-items: center;
   }
@@ -384,6 +384,7 @@ const { profile, socials, skills, projects } = siteConfig;
     display: flex;
     flex-direction: column;
     gap: var(--space-md);
+    width: fit-content;
   }
 
   .panel-frost {
@@ -396,6 +397,7 @@ const { profile, socials, skills, projects } = siteConfig;
     padding: var(--space-lg);
     box-shadow: 0 30px 90px -55px oklch(0.25 0.02 var(--hue) / 0.3);
     transition: all var(--duration-normal) var(--ease-out);
+    max-width: 320px;
   }
 
   .panel-frost:hover {
@@ -421,6 +423,7 @@ const { profile, socials, skills, projects } = siteConfig;
     backdrop-filter: blur(var(--glass-blur));
     padding: var(--space-md) var(--space-lg);
     transition: all var(--duration-normal) var(--ease-out);
+    max-width: 320px;
   }
 
   .panel-info-inner {
