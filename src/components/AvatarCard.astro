@@ -1,4 +1,5 @@
 ---
+import { Image } from 'astro:assets';
 import { siteConfig } from '../site.config';
 const { profile, socials } = siteConfig;
 ---
@@ -6,11 +7,13 @@ const { profile, socials } = siteConfig;
 <div class="hero-card glass-card glass-highlight squircle-xl animate-in">
   {/* 头像 */}
   <div class="avatar-wrapper">
-    <img
+    <Image
       src={profile.avatar}
       alt={profile.displayName}
       class="avatar squircle"
       loading="eager"
+      width={200}
+      height={200}
     />
     <div class="avatar-ring"></div>
   </div>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ProjectCard from '../components/ProjectCard.astro';
+import { Image } from 'astro:assets';
 import { siteConfig } from '../site.config';
 
 const { profile, socials, skills, projects } = siteConfig;
@@ -70,11 +71,13 @@ const { profile, socials, skills, projects } = siteConfig;
       {/* 右侧：头像面板 */}
       <div class="hero-panel animate-in animate-in-delay-2">
         <div class="panel-frost">
-          <img
+          <Image
             src={profile.avatar}
             alt={profile.displayName}
             class="panel-avatar"
             loading="eager"
+            width={400}
+            height={400}
           />
         </div>
         <div class="panel-info">
