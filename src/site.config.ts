@@ -42,7 +42,7 @@ export const siteConfig = {
   nav: [
     { label: '首页', href: '/' },
     { label: '项目', href: '/projects' },
-    { label: '关于', href: '/about' },
+    { label: '关于', href: 'https://blog.mcxiaochen.top/about/' },
   ],
 
   /* ===== 技能标签 ===== */

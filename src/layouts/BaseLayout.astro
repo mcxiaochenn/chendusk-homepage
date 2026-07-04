@@ -51,7 +51,7 @@ const {
       <div class="nav-right">
         <div class="nav-links">
           {siteConfig.nav.map((item) => (
-            <a href={item.href} class="nav-link">{item.label}</a>
+            <a href={item.href} class="nav-link" {...(item.href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>{item.label}</a>
           ))}
         </div>
         <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
